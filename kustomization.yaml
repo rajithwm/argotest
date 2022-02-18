@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: aha
+resources:
+  - ../base
+images:
+  - name: payor
+    newName: k3d-development-registry:5000/payor:22.2-SNAPSHOT
+configMapGenerator:
+  - name: payor-config
+    behavior: replace
+    files:
+      - overrides/memory.properties
+      - overrides/db.properties
+      - overrides/override.properties
+  - name: custom-install-config
+    literals:
+      - CONNECTOR_CLASSIC_REPO_URL=
+      - CUSTOM_CODE_REPO_URL=
+patchesStrategicMerge:
+  - payor.yaml

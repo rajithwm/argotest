@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payor
+  labels:
+    app: payor
+    version: "22.2-SNAPSHOT"
+    build_time: "T22-02-16_11.08.48"
+spec:
+  template:
+    metadata:
+      labels:
+        version: "22.2-SNAPSHOT"
+        build_time: "T22-02-16_11.08.48"
+    spec:
+      containers:
+        - name: payor    
+          env:
+            - name: TZ
+              value: America/New_York    
+      initContainers:
+        - name: log-mount-permission
+          volumeMounts:
+            - name: healthedge-logs
+              mountPath: /home/weblogic/healthedge-logs
+              subPathExpr: aha        
